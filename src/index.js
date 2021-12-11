@@ -3,11 +3,15 @@ const path = require('path')
 
 const R = require('ramda')
 
+const compile = require('./compile.js')
+
 const getInputFilePath = (filename) => path.resolve(__dirname, '..', 'input', filename)
 
-const getOutputFilePath = (filename) => path.resolve(__dirname, '..', 'output', filename)
+const getOutputFilePath = (filename) => {
+  const basename = path.basename(filename, '.asm')
 
-const compile = (content) => content
+  return path.resolve(__dirname, '..', 'output', `${basename}.hack`)
+}
 
 const main = async () => {
   const filename = R.path([
