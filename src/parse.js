@@ -8,7 +8,7 @@ const parseA = (code) => {
 }
 
 const parseC = R.pipe(
-  R.match(/(\w*)=?([A-Z0-9-]*);?(\w*)/),
+  R.match(/([AMD]*)=?([AMD&|10+-]*);?(\w*)/),
   R.props([
     1,
     2,
