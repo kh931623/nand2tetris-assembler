@@ -7,20 +7,42 @@ const parseA = (code) => {
   }
 }
 
-const parseC = R.pipe(
+const parseFullC = R.pipe(
   R.match(/([AMD]*)=?([AMD&|10+-]*);?(\w*)/),
   R.props([
     1,
     2,
     3
-  ]),
-  R.zipObj([
-    'dest',
-    'comp',
-    'jump'
-  ]),
-  R.assoc('type', 'C')
+  ])
 )
+
+const parsePartialC = R.pipe(
+  R.match(/([AMD&|10+-]*);?(\w*)/),
+  R.props([
+    1,
+    2
+  ]),
+  R.prepend('')
+)
+
+const innerParse = R.ifElse(
+  R.includes('='),
+  parseFullC,
+  parsePartialC
+)
+
+const parseC = (code) => {
+  return R.pipe(
+    innerParse,
+    R.map(R.trim),
+    R.zipObj([
+      'dest',
+      'comp',
+      'jump'
+    ]),
+    R.assoc('type', 'C')
+  )(code)
+}
 
 const parse = R.cond([
   [R.startsWith('@'), parseA],
