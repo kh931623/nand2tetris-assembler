@@ -1,6 +1,6 @@
 0000000000000002
-binary ... C
+111compdest000
 0000000000000003
-binary ... C
+111compdest000
 0000000000000000
-binary ... C
+111compdest000
