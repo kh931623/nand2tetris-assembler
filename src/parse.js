@@ -31,18 +31,16 @@ const innerParse = R.ifElse(
   parsePartialC
 )
 
-const parseC = (code) => {
-  return R.pipe(
-    innerParse,
-    R.map(R.trim),
-    R.zipObj([
-      'dest',
-      'comp',
-      'jump'
-    ]),
-    R.assoc('type', 'C')
-  )(code)
-}
+const parseC = R.pipe(
+  innerParse,
+  R.map(R.trim),
+  R.zipObj([
+    'dest',
+    'comp',
+    'jump'
+  ]),
+  R.assoc('type', 'C')
+)
 
 const parse = R.cond([
   [R.startsWith('@'), parseA],
