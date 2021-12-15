@@ -1,7 +1,7 @@
 const R = require('ramda')
 
 const parse = require('./parse.js')
-const codeGen = require('./codeGen.js')
+const generateCode = require('./generateCode.js')
 
 const eitherCommentOrBlank = R.either(
   R.startsWith('//'),
@@ -16,7 +16,7 @@ const getActualCodeLines = R.pipe(
 const tranformCode = R.pipe(
   R.trim,
   parse,
-  codeGen
+  generateCode
 )
 
 const compile = (content) => {
