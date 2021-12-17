@@ -1,14 +1,15 @@
 const R = require('ramda')
 
-const generateA = (code) => {
-  const {
-    address
-  } = code
+const toBinary = (num) => num.toString(2)
 
-  return parseInt(address)
-    .toString(2)
-    .padStart(16, '0')
-}
+const padStart = R.curry((len, char, str) => str.padStart(len, char))
+
+const generateA = R.pipe(
+  R.prop('address'),
+  parseInt,
+  toBinary,
+  padStart(16, '0')
+)
 
 const generateComp = () => 'comp'
 
