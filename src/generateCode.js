@@ -12,7 +12,7 @@ const generateA = (code) => {
 
 const generateComp = () => 'comp'
 
-const getDest = R.pipe(R.__, {
+const getDest = R.prop(R.__, {
   M: '001',
   D: '010',
   DM: '011',
