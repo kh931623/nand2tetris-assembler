@@ -5,7 +5,7 @@ const generateA = (code) => {
     address
   } = code
 
-  return address
+  return parseInt(address)
     .toString(2)
     .padStart(16, '0')
 }
