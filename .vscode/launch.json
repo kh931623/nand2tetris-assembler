@@ -13,7 +13,7 @@
       ],
       "program": "${workspaceFolder}/src/index.js",
       "args": [
-        "PongL.asm"
+        "Max.asm"
       ]
     }
   ]
