@@ -4,12 +4,27 @@ const toBinary = (num) => num.toString(2)
 
 const padStart = R.curry((len, char, str) => str.padStart(len, char))
 
-const generateA = R.pipe(
-  R.prop('address'),
-  parseInt,
-  toBinary,
-  padStart(16, '0')
-)
+// using parseInt in R.ifElse will cause weird problems
+const myParseInt = (str) => parseInt(str)
+
+const getNumericAddress = R.curry((symbolMap, code) => {
+  return R.pipe(
+    R.prop('address'),
+    R.ifElse(
+      isNaN,
+      R.prop(R.__, symbolMap),
+      myParseInt
+    )
+  )(code)
+})
+
+const generateA = R.curry((symbolMap, code) => {
+  return R.pipe(
+    getNumericAddress(symbolMap),
+    toBinary,
+    padStart(16, '0')
+  )(code)
+})
 
 const getAluInstructions = R.prop(R.__, {
   0: '101010',
@@ -110,10 +125,12 @@ const generateC = R.pipe(
   R.join('')
 )
 
-const generateCode = R.ifElse(
-  R.propEq('type', 'A'),
-  generateA,
-  generateC
-)
+const generateCode = R.curry((symbolMap, code) => {
+  return R.ifElse(
+    R.propEq('type', 'A'),
+    generateA(symbolMap),
+    generateC
+  )(code)
+})
 
 module.exports = generateCode

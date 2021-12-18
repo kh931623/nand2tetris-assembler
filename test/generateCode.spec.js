@@ -2,7 +2,7 @@ const generateCode = require('../src/generateCode.js')
 
 describe('generateCode', () => {
   it('should generate A instruction @1 correctly', () => {
-    const result = generateCode({
+    const result = generateCode({}, {
       type: 'A',
       address: '1'
     })
@@ -11,7 +11,7 @@ describe('generateCode', () => {
   })
 
   it('should generate A instruction @8 correctly', () => {
-    const result = generateCode({
+    const result = generateCode({}, {
       type: 'A',
       address: '8'
     })
@@ -20,7 +20,7 @@ describe('generateCode', () => {
   })
 
   it('should generate C instruction D=D+A correctly', () => {
-    const result = generateCode({
+    const result = generateCode({}, {
       type: 'C',
       dest: 'D',
       comp: 'D+A'
@@ -30,7 +30,7 @@ describe('generateCode', () => {
   })
 
   it('should generate C instruction D;JGT correctly', () => {
-    const result = generateCode({
+    const result = generateCode({}, {
       type: 'C',
       dest: '',
       comp: 'D',
@@ -41,7 +41,7 @@ describe('generateCode', () => {
   })
 
   it('should generate C instruction MD=M-1 correctly', () => {
-    const result = generateCode({
+    const result = generateCode({}, {
       type: 'C',
       dest: 'MD',
       comp: 'M-1',
