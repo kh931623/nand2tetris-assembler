@@ -2,6 +2,17 @@
 
 This is the Assembler for [nand2teris](https://www.nand2tetris.org/project06) project 6. It is written in Node.js with functional programming paradigm.
 
+## Usage
+First put your source code in `input` directory.
+Let's say we have a `test.asm` in `input` directory
+
+Second run this:
+```
+$ node src/index.js test.asm
+```
+
+Finally, check out `output` directory for machine code (`test.hack`)
+
 
 ## Modules
 
