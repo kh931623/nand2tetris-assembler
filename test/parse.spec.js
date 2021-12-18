@@ -74,4 +74,17 @@ describe('parse', () => {
 
     expect(result).toStrictEqual(expected)
   })
+
+  it('should parse C instruction D;JGT correctly', () => {
+    const result = parse('D;JGT')
+
+    const expected = {
+      type: 'C',
+      dest: '',
+      comp: 'D',
+      jump: 'JGT'
+    }
+
+    expect(result).toStrictEqual(expected)
+  })
 })

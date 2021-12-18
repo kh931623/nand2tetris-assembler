@@ -65,6 +65,7 @@ const getDest = R.prop(R.__, {
   M: '001',
   D: '010',
   DM: '011',
+  MD: '011',
   A: '100',
   AM: '101',
   AD: '110',
@@ -81,7 +82,7 @@ const generateDest = R.pipe(
 )
 
 const getJump = R.prop(R.__, {
-  JGP: '001',
+  JGT: '001',
   JEQ: '010',
   JGE: '011',
   JLT: '100',

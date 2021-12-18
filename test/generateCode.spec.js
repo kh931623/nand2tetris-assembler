@@ -18,4 +18,36 @@ describe('generateCode', () => {
 
     expect(result).toBe('0000000000001000')
   })
+
+  it('should generate C instruction D=D+A correctly', () => {
+    const result = generateCode({
+      type: 'C',
+      dest: 'D',
+      comp: 'D+A'
+    })
+
+    expect(result).toBe('1110000010010000')
+  })
+
+  it('should generate C instruction D;JGT correctly', () => {
+    const result = generateCode({
+      type: 'C',
+      dest: '',
+      comp: 'D',
+      jump: 'JGT'
+    })
+
+    expect(result).toBe('1110001100000001')
+  })
+
+  it('should generate C instruction MD=M-1 correctly', () => {
+    const result = generateCode({
+      type: 'C',
+      dest: 'MD',
+      comp: 'M-1',
+      jump: ''
+    })
+
+    expect(result).toBe('1111110010011000')
+  })
 })
