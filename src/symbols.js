@@ -46,6 +46,7 @@ const increaseNextMemoryAddress = R.over(nextMemoryAddressLens, R.inc)
 
 const getNextMemoryAddress = R.view(nextMemoryAddressLens)
 const getLineNumber = R.view(lineNumberLens)
+const getSymbolMap = R.view(symbolMapLens)
 const getAtSymbol = R.slice(1, Infinity)
 const getProgramCounterSymbol = R.slice(1, -1)
 
@@ -53,8 +54,20 @@ const addToSymbolMap = R.curry((symbol, value, acc) => {
   return R.over(symbolMapLens, R.assoc(symbol, value), acc)
 })
 
+const alreadyHasThisSymbol = R.curry((symbol, acc) => {
+  return R.pipe(
+    getSymbolMap,
+    R.has(symbol)
+  )(acc)
+})
+
 const addMemoryAddressToSymbolMap = R.curry((code, acc) => {
   const symbol = getAtSymbol(code)
+
+  if (alreadyHasThisSymbol(symbol, acc)) {
+    return acc
+  }
+
   const nextMemoryAddress = getNextMemoryAddress(acc)
 
   return R.pipe(

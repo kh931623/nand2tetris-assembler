@@ -72,4 +72,31 @@ describe('constructSymbolMap', () => {
     expect(result.i).toBe(17)
     expect(result.count).toBe(18)
   })
+
+  it('should produce correct symbol map with duplicaate variables', () => {
+    const result = constructSymbolMap([
+      '@temp',
+      '@var',
+      '@temp'
+    ])
+
+    expect(result.temp).toBe(16)
+    expect(result.var).toBe(17)
+  })
+
+  it('should produce correct symbol map with predefined symbols', () => {
+    const result = constructSymbolMap([
+      '@R0',
+      '@temp',
+      '@var',
+      '@temp',
+      '@R0',
+      '@KBD'
+    ])
+
+    expect(result.temp).toBe(16)
+    expect(result.var).toBe(17)
+    expect(result.R0).toBe(0)
+    expect(result.KBD).toBe(24576)
+  })
 })
