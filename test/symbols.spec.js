@@ -73,6 +73,30 @@ describe('constructSymbolMap', () => {
     expect(result.count).toBe(18)
   })
 
+  it('should produce correct symbol map when labels are accessed before defined', () => {
+    const result = constructSymbolMap([
+      '@var',
+      '(LOOP)',
+      'dummy',
+      '(INC)',
+      'dummy',
+      '@i',
+      'dummy',
+      '@YEAH',
+      'dummy',
+      '(YEAH)',
+      '@count'
+    ])
+
+    expect(result.LOOP).toBe(1)
+    expect(result.INC).toBe(2)
+    expect(result.YEAH).toBe(7)
+
+    expect(result.var).toBe(16)
+    expect(result.i).toBe(17)
+    expect(result.count).toBe(18)
+  })
+
   it('should produce correct symbol map with duplicaate variables', () => {
     const result = constructSymbolMap([
       '@temp',

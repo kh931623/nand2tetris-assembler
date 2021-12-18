@@ -48,7 +48,7 @@ const getNextMemoryAddress = R.view(nextMemoryAddressLens)
 const getLineNumber = R.view(lineNumberLens)
 const getSymbolMap = R.view(symbolMapLens)
 const getAtSymbol = R.slice(1, Infinity)
-const getProgramCounterSymbol = R.slice(1, -1)
+const getLabel = R.slice(1, -1)
 
 const addToSymbolMap = R.curry((symbol, value, acc) => {
   return R.over(symbolMapLens, R.assoc(symbol, value), acc)
@@ -76,27 +76,12 @@ const addMemoryAddressToSymbolMap = R.curry((code, acc) => {
   )(acc)
 })
 
-const addLineNumberToSymbolMap = R.curry((code, acc) => {
-  const symbol = getProgramCounterSymbol(code)
+const addLabelToSymbolMap = R.curry((code, acc) => {
+  const label = getLabel(code)
   const lineNumber = getLineNumber(acc)
 
-  return addToSymbolMap(symbol, lineNumber, acc)
+  return addToSymbolMap(label, lineNumber, acc)
 })
-
-const populateSymbolMap = (acc, code) => {
-  if (startWithLeftparentheses(code)) {
-    return addLineNumberToSymbolMap(code, acc)
-  }
-
-  if (isAtSymbol(code)) {
-    return R.pipe(
-      addMemoryAddressToSymbolMap(code),
-      increaseLineNumber
-    )(acc)
-  }
-
-  return increaseLineNumber(acc)
-}
 
 const getInitial = R.always({
   symbolMap: getPredefinedSymbols(),
@@ -104,10 +89,27 @@ const getInitial = R.always({
   nextMemoryAddress: 16
 })
 
-const constructSymbolMap = R.pipe(
-  R.reduce(populateSymbolMap, getInitial()),
-  R.prop('symbolMap')
-)
+const populateSymbolMapWithLabel = R.curry((acc, code) => {
+  if (startWithLeftparentheses(code)) {
+    return addLabelToSymbolMap(code, acc)
+  }
+
+  return increaseLineNumber(acc)
+})
+
+const populateSymbolMapWithVariables = R.curry((acc, code) => {
+  return isAtSymbol(code)
+    ? addMemoryAddressToSymbolMap(code, acc)
+    : acc
+})
+
+const constructSymbolMap = (codes) => {
+  return R.pipe(
+    R.reduce(populateSymbolMapWithLabel, getInitial()),
+    R.reduce(populateSymbolMapWithVariables, R.__, codes),
+    R.prop('symbolMap')
+  )(codes)
+}
 
 module.exports = {
   constructSymbolMap
