@@ -8,7 +8,7 @@ const parseA = (code) => {
 }
 
 const parseFullC = R.pipe(
-  R.match(/([AMD]*)=?([AMD&|10+-]*);?(\w*)/),
+  R.match(/([AMD]*)=?([AMD&|!10+-]*);?(\w*)/),
   R.props([
     1,
     2,
@@ -17,7 +17,7 @@ const parseFullC = R.pipe(
 )
 
 const parsePartialC = R.pipe(
-  R.match(/([AMD&|10+-]*);?(\w*)/),
+  R.match(/([AMD&|!10+-]*);?(\w*)/),
   R.props([
     1,
     2
