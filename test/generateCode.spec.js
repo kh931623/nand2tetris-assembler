@@ -45,6 +45,19 @@ describe('generateCode', () => {
     expect(result).toBe('0000000000010100')
   })
 
+  it('should generate A instruction @R0 correctly', () => {
+    const symbolMap = {
+      R0: 0
+    }
+
+    const result = generateCode(symbolMap, {
+      type: 'A',
+      address: 'R0'
+    })
+
+    expect(result).toBe('0000000000000000')
+  })
+
   it('should generate C instruction D=D+A correctly', () => {
     const result = generateCode({}, {
       type: 'C',
